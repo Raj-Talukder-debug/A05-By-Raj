@@ -10,7 +10,7 @@ document.getElementById("login-btn").addEventListener('click', ()=> {
     if(userName == "admin" && password == "admin123"){
         alert("Sign in successful");
 
-        window.location.assign("/home.html");
+        window.location.assign("./home.html");
     }
     else{
         alert("Invalid Information");
