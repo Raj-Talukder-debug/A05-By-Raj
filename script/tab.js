@@ -66,9 +66,13 @@ const displayCard = (datas)=>{
         const statusCLass = data.status ==="open" ? "border-green-500" : "border-purple-500";
         const statusIcon = data.status === "open" ? "assets/Open-Status.png" : "assets/Closed- Status .png";
         const newDiv = document.createElement("div");
+
+        newDiv.onclick=()=>{
+            modalDisplay(data)       // modal call from here
+        };
         // console.log(data);
         newDiv.innerHTML = `
-            <div class="card w-full h-full  mx-[2px] mt-10 px-1 pt-4 pb-0 shadow-xl border-t-4 ${statusCLass} ">
+            <div class="card  h-full  mx-[2px] mt-10 px-4 pt-4 pb-0 shadow-xl border-t-4 ${statusCLass} ">
 
                 <div class="flex justify-between items-center  rounded-md ">
 
@@ -111,3 +115,53 @@ const displayCard = (datas)=>{
 loadCard();
 
 
+// modal
+
+const modalDisplay = (data)=>{
+    console.log(data);
+    const detailsBox = document.getElementById("details-container");
+    detailsBox.innerHTML = `
+    
+             
+                <div class="">
+                    <h2 class="font-semibold text-2xl">Fix broken image uploads</h2>
+                    <div class="flex gap-4 mt-2">
+                        <div class="rounded-md bg-green-500 text-[#FFFFFF] px-2">Opened</div>
+                        <span class="text-[#64748B]">Opened by Fahim Ahmed</span>
+                        <span class="text-[#64748B]">22/02/2026</span>
+                    </div>
+
+                    <div class="mt-5 ">
+                        <div class="flex flex-wrap gap-2">
+                           
+                        </div>
+                    </div>
+
+                    <p>The navigation menu doesn't collapse properly on mobile devices. Need to fix the responsive behavior.</p>
+
+                    <div class="bg-gray-100 ">
+
+                       
+                        <div class="flex gap-30 px-4 py-4 m-4">
+                            <div>
+                                <p>Assignee:</p>
+                                <h3>Fahim Ahmed</h3>
+                            </div>
+                            <div>
+                                <p>Priority:</p>
+                                <div class="rounded-md px-4 bg-red-500 text-[#FFFFFF]">High</div>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+
+        
+
+    
+    `;
+    document.getElementById("my_modal_5").showModal();
+};
