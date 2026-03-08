@@ -1,47 +1,83 @@
+
+// bug and help related function
+const createElements = (arr)=>{
+    const htmlElements = arr.map(el => `<span class="rounded-full bg-red-200 text-red-500 px-4 py-1">${el}</span>`);
+    return(htmlElements.join(' '));
+}
+
+
+let allIssue = [];
+
+
+//load card 
+
 const loadCard = ()=>{
     const url = "https://phi-lab-server.vercel.app/api/v1/lab/issues";
     fetch(url)
     .then(res=>res.json())
-    .then(json => displayCard(json.data))
+    .then(json =>{
+         allIssue = (json.data);
+        displayCard(allIssue);
+    });
+       
+};
+
+
+// filter function
+
+const handleFilter =(status)=>{
+    
+    if(status === "all"){
+        displayCard(allIssue);
+    }
+    else{
+        const filterData = allIssue.filter(item => item.status === status);
+        displayCard(filterData);
+
+    }
 };
 
 
 
-// {
-//     "id": 1,
-//     "title": "Fix navigation menu on mobile devices",
-//     "description": "The navigation menu doesn't collapse properly on mobile devices. Need to fix the responsive behavior.",
-//     "status": "open",
-//     "labels": [
-//         "bug",
-//         "help wanted"
-//     ],
-//     "priority": "high",
-//     "author": "john_doe",
-//     "assignee": "jane_smith",
-//     "createdAt": "2024-01-15T10:30:00Z",
-//     "updatedAt": "2024-01-15T10:30:00Z"
-// }
+// add eventlistener
+
+document.getElementById("all-btn").addEventListener("click", ()=>{
+    handleFilter("all")
+});
+document.getElementById("open-btn").addEventListener("click", ()=>{
+    handleFilter("open")
+});
+document.getElementById("closed-btn").addEventListener("click", ()=>{
+    handleFilter("closed")
+});
+
+ 
 
 
+// displaycard
 
 const displayCard = (datas)=>{
+
+    document.getElementById("issue-count").innerText = datas.length;
     const cardContainer = document.getElementById("card-container");
     cardContainer.innerHTML = "";
     datas.forEach(data => {
+
+        const statusCLass = data.status ==="open" ? "border-green-500" : "border-purple-500";
+        const statusIcon = data.status === "open" ? "assets/Open-Status.png" : "assets/Closed- Status .png";
         const newDiv = document.createElement("div");
-        console.log(data)
+        // console.log(data);
         newDiv.innerHTML = `
-                        <div class="card w-[280px] mx-1 mt-10 p-4 shadow-xl">
+            <div class="card w-full h-full  mx-[2px] mt-10 px-1 pt-4 pb-0 shadow-xl border-t-4 ${statusCLass} ">
 
                 <div class="flex justify-between items-center  rounded-md ">
 
                     <div>
-                        <img src="assets/Open-Status.png" alt="">
+                        <img src="${statusIcon}" alt="">
                     </div>
 
                     <div class="bg-red-50 text-red-500 rounded-full px-5 py-1 ">
-                        <p>High</p>
+                        <p>${data.priority}</p>
                     </div>
 
                 </div>
@@ -53,19 +89,12 @@ const displayCard = (datas)=>{
 
 
 
-                <div>
-                    <div class=" rounded-md flex gap-2 mt-5">
-
-                        <div class=" rounded-full bg-red-200 text-red-500 px-4 py-1">
-                            <p><i class="fa-solid fa-bug"></i>BUG</p>
-                        </div>
-                        <div class=" rounded-full bg-[#D97706]/30 text-[#D97706]/90 px-4 py-1">
-                            <p><i class="fa-solid fa-circle-h"></i>help wanted</p>
-                        </div>
-
-
+                <div class="mt-5 ">
+                    <div class="flex flex-wrap gap-2">
+                        ${createElements(data.labels)}
                     </div>
                 </div>
+
                 <hr class="mt-5 border-gray-400">
 
                 <div class="mt-5 text-[#64748B]">
@@ -80,3 +109,5 @@ const displayCard = (datas)=>{
 
 };
 loadCard();
+
+
