@@ -122,7 +122,7 @@ const displayCard = (datas)=>{
                         <img src="${statusIcon}" alt="">
                     </div>
 
-                    <div class="bg-red-50 text-red-500 rounded-full px-5 py-1 ">
+                    <div class="bg-red-200 text-red-500 rounded-full px-5 py-1 ">
                         <p>${data.priority}</p>
                     </div>
 
