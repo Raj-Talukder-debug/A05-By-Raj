@@ -45,8 +45,8 @@
 
                 <div class="flex gap-5">
 
-                    <input type="text"  placeholder="Search issues..." class="input input-bordered w-24 md:w-auto" />
-                    <button id="login-btn" class="btn btn-primary px-10 py-4"> + New Issue</button>
+                    <input id="input-search" type="text"  placeholder="Search issues..." class="input input-bordered w-24 md:w-auto" />
+                    <button id="btn-search" class="btn btn-primary px-10 py-4"> + New Issue</button>
 
                 </div>
         </section>
@@ -55,11 +55,15 @@
 
     <!-- btn-section -->
 
-    <section class=" w-[1160px] mx-auto  bg-base-100 shadow-sm mt-8 p-5">
-        <button id="all-btn" onclick="" class="btn ">All</button>
+    <section id="-button" class=" w-[1160px] mx-auto  bg-base-100 shadow-sm mt-8 p-5">
+        <button id="all-btn" onclick="" class="btn bg-primary text-white">All</button>
         <button id="open-btn" onclick="" class="btn ">Open</button>
         <button id="closed-btn" onclick="" class="btn">Closed</button>
     </section>
+
+
+
+
 
     <!-- total issue count section -->
 
@@ -96,6 +100,30 @@
 
 
 
+    <!-- spinner -->
+
+   <section id="spinner" class=" flex justify-center items-center pt-10 hidden">
+
+    <span class="loading loading-ball loading-xs"></span>
+    <span class="loading loading-ball loading-sm"></span>
+    <span class="loading loading-ball loading-md"></span>
+    <span class="loading loading-ball loading-lg"></span>
+    <span class="loading loading-ball loading-xl"></span>
+
+
+   </section>
+
+
+
+
+
+
+
+
+
+
+
+
     <!-- card section -->
 
 
@@ -117,7 +145,7 @@
 
            <div id="details-container" class="">
 
-            
+
            </div>
 
 
@@ -131,6 +159,20 @@
             </div>
         </div>
     </dialog>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <script src="script/tab.js"></script>
 </body>

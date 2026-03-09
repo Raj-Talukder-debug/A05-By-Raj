@@ -6,12 +6,29 @@ const createElements = (arr)=>{
 }
 
 
-let allIssue = [];
 
+const manageSpinner = (status)=>{
+    if(status == true){
+        document.getElementById("spinner").classList.remove("hidden");
+        document.getElementById("card-container").classList.add("hidden");
+    }
+    else{
+        document.getElementById("card-container").classList.remove("hidden");
+        document.getElementById("spinner").classList.add("hidden");
+    }
+};
+
+
+
+
+
+
+let allIssue = [];
 
 //load card 
 
 const loadCard = ()=>{
+    manageSpinner(true);
     const url = "https://phi-lab-server.vercel.app/api/v1/lab/issues";
     fetch(url)
     .then(res=>res.json())
@@ -39,16 +56,41 @@ const handleFilter =(status)=>{
 
 
 
+// highlight btn
+
+const highlightBtn = (clicked)=>{
+    const btnId = ["all-btn", "open-btn", "closed-btn"];
+
+    btnId.forEach(id =>{
+        const btn = document.getElementById(id);
+
+        if(id == clicked ){
+            btn.classList.add("bg-primary" ,"text-white")
+        }
+        else{
+             btn.classList.remove("bg-primary" ,"text-white")
+        }
+    });
+};
+
+
+
+
+
+
 // add eventlistener
 
 document.getElementById("all-btn").addEventListener("click", ()=>{
-    handleFilter("all")
+    handleFilter("all");
+    highlightBtn("all-btn");
 });
 document.getElementById("open-btn").addEventListener("click", ()=>{
-    handleFilter("open")
+    handleFilter("open");
+    highlightBtn("open-btn");
 });
 document.getElementById("closed-btn").addEventListener("click", ()=>{
-    handleFilter("closed")
+    handleFilter("closed");
+    highlightBtn("closed-btn");
 });
 
  
@@ -57,7 +99,7 @@ document.getElementById("closed-btn").addEventListener("click", ()=>{
 // displaycard
 
 const displayCard = (datas)=>{
-
+    
     document.getElementById("issue-count").innerText = datas.length;
     const cardContainer = document.getElementById("card-container");
     cardContainer.innerHTML = "";
@@ -110,9 +152,15 @@ const displayCard = (datas)=>{
         `;
         cardContainer.append(newDiv);
     });
-
+    manageSpinner(false);
 };
 loadCard();
+
+
+
+
+
+
 
 
 // modal
@@ -126,18 +174,18 @@ const modalDisplay = (data)=>{
                 <div class="">
                     <h2 class="font-semibold text-2xl">Fix broken image uploads</h2>
                     <div class="flex gap-4 mt-2">
-                        <div class="rounded-md bg-green-500 text-[#FFFFFF] px-2">Opened</div>
-                        <span class="text-[#64748B]">Opened by Fahim Ahmed</span>
+                        <div class="rounded-md bg-green-500 text-[#FFFFFF] px-2">${data.status}</div>
+                        <span class="text-[#64748B]">Opened by ${data.author}</span>
                         <span class="text-[#64748B]">22/02/2026</span>
                     </div>
 
                     <div class="mt-5 ">
                         <div class="flex flex-wrap gap-2">
-                           
+                           ${createElements(data.labels)}
                         </div>
                     </div>
 
-                    <p>The navigation menu doesn't collapse properly on mobile devices. Need to fix the responsive behavior.</p>
+                    <p>${data.description}</p>
 
                     <div class="bg-gray-100 ">
 
@@ -145,11 +193,11 @@ const modalDisplay = (data)=>{
                         <div class="flex gap-30 px-4 py-4 m-4">
                             <div>
                                 <p>Assignee:</p>
-                                <h3>Fahim Ahmed</h3>
+                                <h3>${data.assignee}</h3>
                             </div>
                             <div>
                                 <p>Priority:</p>
-                                <div class="rounded-md px-4 bg-red-500 text-[#FFFFFF]">High</div>
+                                <div class="rounded-md px-4 bg-red-500 text-[#FFFFFF]">${data.priority}</div>
                             </div>
                         </div>
 
@@ -165,3 +213,29 @@ const modalDisplay = (data)=>{
     `;
     document.getElementById("my_modal_5").showModal();
 };
+
+
+
+
+
+
+
+
+// search
+
+document.getElementById("btn-search").addEventListener("click",()=>{
+    const input = document.getElementById("input-search");
+    const searchValue = input.value.trim().toLowerCase() ;
+    console.log(searchValue);
+
+    fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
+    .then(res=>res.json())
+    .then(data=>{
+        const allWords = data.data;
+        const filterWords = allWords.filter(item=>{
+            return item.title.toLowerCase().includes(searchValue);
+        })
+      displayCard(filterWords);
+    });
+    
+});
